@@ -1,32 +1,33 @@
-# Dependencies
+# Dependency directories
 node_modules/
-**/node_modules/
+jspm_packages/
+web_stage/
 
-# Environment variables
+# Build and distribution
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# Environment files
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-**/.env
-**/.env.local
-**/.env.production.local
+backend/.env
+frontend/.env
 
-# Production builds
-dist/
-**/dist/
-build/
-**/build/
-
-# IDE and Editor files
-.vscode/
+# IDEs and editors
 .idea/
+.vscode/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# OS files
+# OS metadata
 .DS_Store
 Thumbs.db

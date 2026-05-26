@@ -9,42 +9,24 @@ const bfhlRoutes = require('./routes/bfhl');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Configure CORS with allowed origins
+// Enable CORS
 const allowedOrigins = [
-  'http://localhost:5173', // Vite local development
-  'http://localhost:3000', // Alternative local port
+  'https://deskflow-support.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000'
 ];
-
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
-}
-if (process.env.ALLOWED_ORIGINS) {
-  const customOrigins = process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim());
-  allowedOrigins.push(...customOrigins);
-}
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow server-to-server or tools (no origin header)
     if (!origin) return callback(null, true);
-    
-    // Check if the request origin matches any allowed origin
-    const isAllowed = allowedOrigins.some(allowedOrigin => {
-      // Support exact matches or wildcard matches
-      return allowedOrigin === origin || origin.endsWith('.' + allowedOrigin.replace(/^https?:\/\//, ''));
-    });
-
-    if (isAllowed) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
     }
+    return callback(null, true);
   },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true
 }));
-
 app.use(express.json({ limit: '10mb' }));
 
 // Mount routes
